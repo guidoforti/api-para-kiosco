@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.guido.ApiKiosco.DAO;
+package com.guido.ApiProductos.DAO;
 
-import com.guido.ApiKiosco.entity.Producto;
+import com.guido.ApiProductos.entity.Producto;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;

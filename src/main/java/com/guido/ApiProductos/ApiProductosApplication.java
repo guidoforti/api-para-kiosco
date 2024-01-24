@@ -1,13 +1,13 @@
-package com.guido.ApiKiosco;
+package com.guido.ApiProductos;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ApiKioscoApplication {
+public class ApiProductosApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ApiKioscoApplication.class, args);
+		SpringApplication.run(ApiProductosApplication.class, args);
 	}
 
 }

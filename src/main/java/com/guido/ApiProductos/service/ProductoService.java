@@ -3,10 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.guido.ApiKiosco.service;
+package com.guido.ApiProductos.service;
 
-import com.guido.ApiKiosco.DAO.ProductoRepository;
-import com.guido.ApiKiosco.entity.Producto;
+import com.guido.ApiProductos.DAO.ProductoRepository;
+import com.guido.ApiProductos.Exceptions.MyException;
+import com.guido.ApiProductos.entity.Producto;
 import java.util.List;
 import java.util.Optional;
 import javax.transaction.Transactional;
@@ -26,21 +27,15 @@ public class ProductoService {
     
     
     @Transactional
-    public Producto save (Producto producto) {
+    public Producto save (Producto producto) throws MyException {
         
+      validate(producto);
     return productoRepository.save(producto);
     }
     
     
     public Producto obtenerProductoPorId (Integer id)  {
-        Optional <Producto> response = productoRepository.findById(id);
- 
-        if (response.isPresent()) {
-        Producto producto = response.get();
-        return producto;
-        }
-        else {
-        return null;}
+       return productoRepository.findById(id).orElse(null);
     }
     
     public List <Producto> listarProductos() {
@@ -53,6 +48,7 @@ public class ProductoService {
         productoRepository.delete(producto);
     }
     
+  
     
     @Transactional
     public Producto actualizarProducto (Producto producto) {
@@ -65,5 +61,12 @@ public class ProductoService {
     public  List <Producto> obtenerProductoPorPrecio(Double precio) {
    
         return (List<Producto>) productoRepository.buscarPorPrecio(precio);
+    }
+    
+    
+    private void validate ( Producto producto) throws MyException {
+        if (producto.getNombre().equals(null) || producto.getPrecio().equals(null)) {
+        throw new MyException ("los campos del producto no pueden estar vacios");
+        }
     }
 }
