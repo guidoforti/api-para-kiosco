@@ -51,8 +51,9 @@ public class ProductoService {
   
     
     @Transactional
-    public Producto actualizarProducto (Producto producto) {
+    public Producto actualizarProducto (Producto producto) throws MyException {
         
+         validate(producto);
         return productoRepository.save(producto);
     
     }
@@ -64,9 +65,14 @@ public class ProductoService {
     }
     
     
+    public boolean existeById (Integer id) {
+    return productoRepository.existsById(id);
+    }
     private void validate ( Producto producto) throws MyException {
         if (producto.getNombre().equals(null) || producto.getPrecio().equals(null)) {
         throw new MyException ("los campos del producto no pueden estar vacios");
         }
     }
+    
+   
 }

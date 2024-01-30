@@ -7,6 +7,8 @@ package com.guido.ApiProductos.controller;
 
 import com.guido.ApiProductos.Exceptions.MyException;
 import com.guido.ApiProductos.entity.Producto;
+import com.guido.ApiProductos.entity.ProductoDTO;
+import com.guido.ApiProductos.payload.MensajeResponse;
 import com.guido.ApiProductos.service.ProductoService;
 import java.util.HashMap;
 import java.util.List;
@@ -36,13 +38,15 @@ public class ProductoController {
     @PostMapping("/producto")
     //@ResponseStatus(HttpStatus.CREATED)
    public ResponseEntity<?> saveProducto ( @RequestBody Producto producto) throws MyException {
-         Map<String, Object> response = new HashMap<>();
+       Map<String, Object> response = new HashMap<>();
         try {
-            if ( producto != null) {productoService.save(producto);
+            if ( producto != null) {
+               
+                productoService.save(producto);
             return new ResponseEntity<>(producto , HttpStatus.CREATED);
             } else {
-            response.put("mensaje" , "el producto enviado no puede estar vacio");
-            response.put("producto", null);
+           response.put("mensaje" , "el producto enviado no puede estar vacio");
+           response.put("producto", null);
             return new ResponseEntity<>(response, HttpStatus.METHOD_NOT_ALLOWED);
             }
             
@@ -102,16 +106,21 @@ public class ProductoController {
        
    }
    
-   @PutMapping("/producto")
+   @PutMapping("/producto/{id}")
    //@ResponseStatus(HttpStatus.OK)
-   public ResponseEntity<?> actualizarProducto (@RequestBody Producto producto) {
+   public ResponseEntity<?> actualizarProducto (@RequestBody Producto producto, @PathVariable Integer id) throws MyException {
        Map <String, Object> response = new HashMap<>();
+       
+        Producto productoActualizar = productoService.obtenerProductoPorId(id);
        try {
-           if ( producto != null) {
-        actualizarProducto(producto);
-        return new ResponseEntity<>(producto, HttpStatus.OK);
+           if ( productoActualizar != null) {
+               productoActualizar.setId(id);
+               productoActualizar.setNombre(producto.getNombre());
+               productoActualizar.setPrecio(producto.getPrecio());
+        productoService.actualizarProducto(productoActualizar);
+        return new ResponseEntity<>(productoActualizar, HttpStatus.OK);
        } else {
-               response.put("mensaje", "el producto a actualizarno puede estar vacio");
+               response.put("mensaje", "el producto a actualizar no fue encontrado en la base de datos");
                response.put("producto", null);
                return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
        }

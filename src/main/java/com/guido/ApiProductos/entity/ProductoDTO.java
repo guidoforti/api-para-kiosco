@@ -5,37 +5,30 @@
  */
 package com.guido.ApiProductos.entity;
 
-
 import java.io.Serializable;
-import javax.persistence.Entity;
-import javax.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+/**
+ *
+ * @author Guido
+ */
+@Data
+@Builder
 
-
-
-@Entity
-public class Producto implements Serializable {
-    
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+@ToString
+public class ProductoDTO implements Serializable{
+     private Integer id;
     
     private String nombre;
     private Double precio;
 
-    
-    public Producto () {
-    }
-    
-    
     public Integer getId() {
         return id;
     }
-    
+
     public void setId(Integer id) {
         this.id = id;
     }
@@ -55,8 +48,7 @@ public class Producto implements Serializable {
     public void setPrecio(Double precio) {
         this.precio = precio;
     }
+    
+    
 
-    
-    
-    
 }
