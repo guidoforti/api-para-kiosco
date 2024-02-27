@@ -5,41 +5,37 @@
  */
 package com.guido.ApiProductos.entity;
 
-
 import java.io.Serializable;
+import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
-
-
-
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 @Entity
-public class Producto implements Serializable {
+@Table( name = "compañia")
+public class Compañia implements  Serializable{
     
     @Id
+    @Column (name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
-    
+    private  Integer id;
+    @Column(name = "nombre")
     private String nombre;
-    private Double precio;
     
-
-    @ManyToOne
-    @JoinColumn(name = "id_compañia")
-    private Compañia compania;
+    @OneToMany( mappedBy = "compania" )
+    private List <Producto> productos;
     
-    public Producto () {
+    public Compañia () {
     }
-    
-    
+
     public Integer getId() {
         return id;
     }
-    
+
     public void setId(Integer id) {
         this.id = id;
     }
@@ -52,22 +48,14 @@ public class Producto implements Serializable {
         this.nombre = nombre;
     }
 
-    public Double getPrecio() {
-        return precio;
+    public List<Producto> getProductos() {
+        return productos;
     }
 
-    public void setPrecio(Double precio) {
-        this.precio = precio;
+    public void setProductos(List<Producto> productos) {
+        this.productos = productos;
     }
-
-    public Compañia getCompania() {
-        return compania;
-    }
-
-    public void setCompania(Compañia compania) {
-        this.compania = compania;
-    }
-
+    
     
     
     
