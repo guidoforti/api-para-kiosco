@@ -7,7 +7,7 @@ package com.guido.ApiProductos.service;
 
 import com.guido.ApiProductos.DAO.ProductoRepository;
 import com.guido.ApiProductos.Exceptions.MyException;
-import com.guido.ApiProductos.entity.Compañia;
+
 import com.guido.ApiProductos.entity.Producto;
 import java.util.List;
 import java.util.Optional;
@@ -22,23 +22,17 @@ public class ProductoService {
     
     @Autowired
     ProductoRepository productoRepository;
-    @Autowired
-    CompañiaService compañiaService;
+    
     
     @Transactional
     public Producto save (Producto producto) throws MyException {
         
       validate(producto);
       
-      Producto productoGuardado = productoRepository.save(producto);
+     return productoRepository.save(producto);
       
-      Compañia compañia = productoGuardado.getCompania();
       
-     compañia.getProductos().add(productoGuardado);
      
-     compañiaService.actualizarCompañia(compañia);
-     
-    return productoGuardado;
     }
     
     
@@ -72,10 +66,7 @@ public class ProductoService {
         return (List<Producto>) productoRepository.buscarPorPrecio(precio);
     }
     
-   public List<Producto> obtenerProductosPorCompañia (String nombre) {
-   
-   return (List<Producto>) productoRepository.obtenerProductosSegunCompania(nombre);
-   } 
+ 
     
     public boolean existeById (Integer id) {
     return productoRepository.existsById(id);
@@ -85,14 +76,11 @@ public class ProductoService {
         
         
         
-        if (producto.getNombre() == null || producto.getPrecio() == null || producto.getCompania() == null) {
+        if (producto.getNombre() == null || producto.getPrecio() == null) {
             
         throw new MyException ("los campos del producto no pueden estar vacios o la compañia debe pertenecer a una compañia de la base original");
         } 
-        if  (compañiaService.obtenerPorId(producto.getCompania().getId()) == null  || compañiaService.obtenerCompañiaPorNombre(producto.getCompania().getNombre()) == null ) {
-        
-        throw  new MyException("la compañia no se encontro en la base de datos");
-        }
+       
     }
     
    

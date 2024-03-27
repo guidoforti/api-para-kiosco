@@ -5,20 +5,20 @@
  */
 package com.guido.ApiProductos.DAO;
 
-import com.guido.ApiProductos.entity.Producto;
-import java.util.List;
+import com.guido.ApiProductos.entity.Empresa;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-
+/**
+ *
+ * @author Guido
+ */
 @Repository
-public interface ProductoRepository extends CrudRepository <Producto , Integer>{
+public interface EmpresaRepository extends CrudRepository <Empresa , Integer>{
+ 
     
-    
-    @Query("SELECT p FROM Producto p WHERE p.precio = :precio")
-    public Producto buscarPorPrecio(@Param("precio") Double precio) ;
-    
-    
+  @Query ("SELECT e FROM Empresa e WHERE e.nombre = :nombre")  
+  public Empresa obtenerEmpresaPorNombre(@Param("nombre") String nombre);
 }

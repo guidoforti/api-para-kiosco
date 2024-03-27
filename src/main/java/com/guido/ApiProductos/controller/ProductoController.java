@@ -9,7 +9,7 @@ import com.guido.ApiProductos.Exceptions.MyException;
 import com.guido.ApiProductos.entity.Producto;
 import com.guido.ApiProductos.entity.ProductoDTO;
 import com.guido.ApiProductos.payload.MensajeResponse;
-import com.guido.ApiProductos.service.CompañiaService;
+
 import com.guido.ApiProductos.service.ProductoService;
 import java.util.HashMap;
 import java.util.List;
@@ -35,8 +35,7 @@ public class ProductoController {
   
     @Autowired
     ProductoService productoService;
-    @Autowired
-    CompañiaService compañiaService;
+   
     
     @PostMapping("/producto")
     //@ResponseStatus(HttpStatus.CREATED)
@@ -44,18 +43,9 @@ public class ProductoController {
        Map<String, Object> response = new HashMap<>();
         try {
             if ( producto != null) {
-               
-                if (compañiaService.obtenerCompañiaPorNombre(producto.getCompania().getNombre()) != null) {
-                productoService.save(producto);
-                } else {
-                
-                    response.put("mensaje", "el producto que agrego tiene asocida una compañia que no se encuentra en la base de datos");
-                    response.put("compañia", null);
-                return  new ResponseEntity<>(response , HttpStatus.BAD_REQUEST);
-                }
-                
-                
-            return new ResponseEntity<>(producto , HttpStatus.CREATED);
+
+               productoService.save(producto);
+                 return new ResponseEntity<>(producto , HttpStatus.CREATED);
             } else {
            response.put("mensaje" , "el producto enviado no puede estar vacio");
            response.put("producto", null);
@@ -171,31 +161,7 @@ public class ProductoController {
        
    }
    
-   @GetMapping("productos/{nombre}")
-   public ResponseEntity<?> obtenerProductosPorCompañia (@PathVariable String nombre) {
-       
-       Map <String ,Object> response = new HashMap<>();
-       
-       try {
-           List <Producto> productosPorNombreDeCompañia = productoService.obtenerProductosPorCompañia(nombre);
-           
-           if (!productosPorNombreDeCompañia.isEmpty()) {
-           return new ResponseEntity<>(productosPorNombreDeCompañia , HttpStatus.OK);
-           }else {
-           response.put("mensaje", "productos no encontrados");
-           response.put("productos", null);
-           return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-        
-           }
-           
-           
-       } catch (DataAccessException e) {
-           response.put("mensaje", e.getMessage());
-           response.put("producto" , null);
-           
-           return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-       }
-   }
+   
 
    
    @GetMapping("/productos")

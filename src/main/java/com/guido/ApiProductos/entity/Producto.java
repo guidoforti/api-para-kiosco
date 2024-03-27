@@ -21,16 +21,14 @@ import lombok.ToString;
 public class Producto implements Serializable {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     
     private String nombre;
     private Double precio;
     
-
-    @ManyToOne
-    @JoinColumn(name = "id_compañia")
-    private Compañia compania;
+@ManyToOne
+    private Empresa empresa;
     
     public Producto () {
     }
@@ -60,13 +58,7 @@ public class Producto implements Serializable {
         this.precio = precio;
     }
 
-    public Compañia getCompania() {
-        return compania;
-    }
 
-    public void setCompania(Compañia compania) {
-        this.compania = compania;
-    }
 
     
     
